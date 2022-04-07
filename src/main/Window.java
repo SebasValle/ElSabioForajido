@@ -1,5 +1,4 @@
-//LIBRERIAS NECESARIAS
-
+//Importamos las librerIas necesarias
 package main;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -9,32 +8,27 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-
+import graficos.Assets;
 
 public class Window extends JFrame implements Runnable{
-	
-	//TAMAÑO DE LA VENTANA DEL JUEGO
+	//Tamanio de la ventana
 	public static final int WIDTH = 800, HEIGHT = 600;
-	
-	//OBJETOS CREADOS DE LAS LIBRERÍAS IMPORTADAS
+	//Objetos creados de las librerIas importadas
 	private Canvas canvas;
 	private Thread hilo;
-	
-	//INICIADOR DE NUESTRO JUEGO
+	//Iniciador de nuestro juego
 	private boolean corriendo = false;
 	
-	//OBJETOS PARA DIBUJO
+	//Objetos para dibujo
 	private BufferStrategy bufs;
 	private Graphics gf;
 	
-	
 	private final int FPS = 60;
-	private double TIEMPO_X_FPS= 1000000000/FPS;//target
-	private double Tiempo_transcurrido = 0;//delta ALMACENA EL TIEMPO QEU VA PASANDO
-	private int FPS_PROMEDIO = FPS;//average
+	private double TARGET_TIME = 1000000000/FPS;
+	private double delta = 0;	//Almacena el tiempo que va pasando, temporalmente
+	private int AVERAGE_FPS = FPS;
 	
-	
-	//CONSTRUCTOR DE NUESTRA VENTANA 
+	//Constructor de nuestra ventana
 	public Window() {
 		setTitle("El Sabio Forajido");
 		setSize(WIDTH, HEIGHT);
@@ -45,102 +39,101 @@ public class Window extends JFrame implements Runnable{
 		setVisible(true);
 		
 		canvas = new Canvas();
-		canvas.setPreferredSize(new Dimension(WIDTH,HEIGHT));
-		canvas.setMaximumSize(new Dimension(WIDTH,HEIGHT));
-		canvas.setMinimumSize(new Dimension(WIDTH,HEIGHT));
+		canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		canvas.setMaximumSize(new Dimension(WIDTH, HEIGHT));
+		canvas.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		canvas.setFocusable(true);
 		
 		add(canvas);
+		
 	}
+	
 	
 	public static void main(String[] args) {
-		
 		new Window().start();
+		
 	}
 	
-	private int x =0;
-	
-	private void actualizar() {
-		x++;
+	private void actualizar(){
+
 	}
 	
-	
-	private void dibujar() {
+	private void dibujar(){
+		bufs  = canvas.getBufferStrategy();
 		
-		bufs = canvas.getBufferStrategy();
-		
-		if (bufs == null) {
-			canvas.createBufferStrategy(3);
+		if(bufs == null) {
+			canvas.createBufferStrategy(3);	//Numero de buffers adecuado
 			return;
 		}
-		
-		gf=bufs.getDrawGraphics();
-		
-		//DIBUJO INICIO
-		gf.clearRect(0, 0, WIDTH, HEIGHT);
+		//Preparamos el lienso
+		gf = bufs.getDrawGraphics();
+		//Dibujo inicio
 		gf.setColor(Color.BLACK);
-		gf.drawString("FPS "+FPS_PROMEDIO , 10,10);
-	
-		//DIBUJO FINAL
+		gf.fillRect(0, 0, WIDTH, HEIGHT);
+	    gf.drawImage(Assets.player, 100, 100, null);
+		gf.drawString(""+AVERAGE_FPS, 10, 20);
+		//Dibujo final
 		
 		gf.dispose();
 		bufs.show();
 	}
 	
-	//SE INICIZALIZA EL JUEGO
+	private void init() {
+		Assets.init();
+	}
+
+	//Se inicializa el juego
 	@Override
 	public void run() {
 		
-		long actual = 0;
-		long ultimosegundo = System.nanoTime();
+		long ahora = 0;
+		long lastTime = System.nanoTime();
 		int frames = 0;
 		long time = 0;
 		
+		init();
 		
-		while (corriendo) {
-			actual = System.nanoTime();
-			//Cuando Tiempo_transcurrido SEA UNO PODREMOS ACTAULIZAR LOS FOTOGRAMAS
-			Tiempo_transcurrido += ( actual - ultimosegundo )/TIEMPO_X_FPS;
-			time += ( actual - ultimosegundo );
-			ultimosegundo = actual;
+		while(corriendo)
+		{
+			ahora = System.nanoTime();
+			//CUANDO SEA 1, PODREMOS ACTUALIZAR LOS FOTOGRAMAS.
+			delta += (ahora - lastTime)/TARGET_TIME;
+			time +=(ahora - lastTime);
+			lastTime = ahora;
 			
-			if(Tiempo_transcurrido >= 1)
+			if(delta >= 1)
 			{
 				actualizar();
 				dibujar();
-				Tiempo_transcurrido--;
+				delta --;
 				frames++;
-				
 			}
-			if(time>= 1000000000)//YA PASO UN SEGUNDO
+			if(time >= 1000000000)	//Ya pasO un segundo.
 			{
-				TIEMPO_X_FPS = frames;
-				frames = 0;//SE REINICIA LA CUENTA DE FRMAES
+				AVERAGE_FPS = frames;
+				frames = 0; //Para empezar a contar de nuevo.
 				time = 0;
 			}
-		}  
+		}
 		
+		stop();
 	}
-	
-	//DA LUZ VERDE A INICIO DE JUEGO
+	//Da luz verde al inicio del juego
 	private void start() {
-		//UTILIZAMOS UN HILO POR TEMAS DE RENDERIZACIÓN DE LA IMAGEN
+		//Utilizamos un hilo por temas de renderizaciOn de la imagen.
 		hilo = new Thread(this);
 		hilo.start();
 		corriendo = true;
 	}
-	
-	//TERMINA EL JUEGO
+	//Termina el juego
 	private void stop() {
 		try {
 			hilo.join();
 			corriendo = false;
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
 	
 
 }
