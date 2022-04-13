@@ -6,6 +6,6 @@ public class Assets {
 	public static BufferedImage player;
 	
 	public static void init() {
-		player = Loader.ImageLoader("/vaqueros/p1.png");
+		player = Loader.ImageLoader("/ships/p1.png");
 	}
 }

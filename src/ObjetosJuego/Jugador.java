@@ -3,6 +3,7 @@ package ObjetosJuego;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import entrada.Teclado;
 import matematicas.Vector2D;
 
 public class Jugador extends ObjetoJuego{
@@ -13,6 +14,8 @@ public class Jugador extends ObjetoJuego{
 
 	@Override
 	public void actualizar() {
+		if(Teclado.DERECHA)
+			posicion.setX(posicion.getX()+1);
 	}
 
 	@Override

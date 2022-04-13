@@ -8,6 +8,8 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import entrada.Teclado;
+import estados.EstadoJuego;
 import graficos.Assets;
 
 public class Window extends JFrame implements Runnable{
@@ -28,6 +30,9 @@ public class Window extends JFrame implements Runnable{
 	private double delta = 0;	//Almacena el tiempo que va pasando, temporalmente
 	private int AVERAGE_FPS = FPS;
 	
+	private EstadoJuego estadoJuego;
+	private Teclado teclado;
+	
 	//Constructor de nuestra ventana
 	public Window() {
 		setTitle("El Sabio Forajido");
@@ -39,12 +44,15 @@ public class Window extends JFrame implements Runnable{
 		setVisible(true);
 		
 		canvas = new Canvas();
+		teclado = new Teclado();
+		
 		canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		canvas.setMaximumSize(new Dimension(WIDTH, HEIGHT));
 		canvas.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		canvas.setFocusable(true);
 		
 		add(canvas);
+		canvas.addKeyListener(teclado);
 		
 	}
 	
@@ -55,7 +63,8 @@ public class Window extends JFrame implements Runnable{
 	}
 	
 	private void actualizar(){
-
+		teclado.actualizar();
+		estadoJuego.actualizar();
 	}
 	
 	private void dibujar(){
@@ -68,9 +77,12 @@ public class Window extends JFrame implements Runnable{
 		//Preparamos el lienso
 		gf = bufs.getDrawGraphics();
 		//Dibujo inicio
-		gf.setColor(Color.BLACK);
+		gf.setColor(Color.BLUE);
+		
 		gf.fillRect(0, 0, WIDTH, HEIGHT);
-	    
+		
+		estadoJuego.dibujar(gf);
+
 		gf.drawString(""+AVERAGE_FPS, 10, 20);
 		//Dibujo final
 		
@@ -80,6 +92,7 @@ public class Window extends JFrame implements Runnable{
 	
 	private void init() {
 		Assets.init();
+		estadoJuego = new EstadoJuego();
 	}
 
 	//Se inicializa el juego
