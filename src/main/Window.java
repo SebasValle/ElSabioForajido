@@ -70,7 +70,7 @@ public class Window extends JFrame implements Runnable{
 		//Dibujo inicio
 		gf.setColor(Color.BLACK);
 		gf.fillRect(0, 0, WIDTH, HEIGHT);
-	    gf.drawImage(Assets.player, 100, 100, null);
+	    
 		gf.drawString(""+AVERAGE_FPS, 10, 20);
 		//Dibujo final
 		
