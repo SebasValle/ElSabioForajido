@@ -12,20 +12,41 @@ import graficos.Assets;
 public class Jugador extends ObjetoMovible{
 
 		private Vector2D apuntador;
+		private Vector2D aceleracion;
+		private final double acc = 0.08;	//Aceleracion constante.
+		private final double ANGULITO = 0.1;
 
-	public Jugador(Vector2D posicion, Vector2D velocidad, BufferedImage textura) {
-		super(posicion, velocidad, textura);
+	public Jugador(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura) {
+		super(posicion, velocidad, velMax, textura);
 		apuntador = new Vector2D(0, 1);
+		aceleracion = new Vector2D();
 	}
 
 	@Override
 	public void actualizar() {
 		if(Teclado.DERECHA)
-			angulo += Math.PI/20;
+			angulo += ANGULITO;
 		if(Teclado.IZQUIERDA)
-			angulo -= Math.PI/20;
+			angulo -= ANGULITO;
+		
+		if(Teclado.ARRIBA) {
+			aceleracion = apuntador.escalar(acc);
+		}
+		else
+		{
+			if(velocidad.getMagnitud() != 0)
+				aceleracion = (velocidad.escalar(-1).normalizacion().escalar(acc/2));
+		}
+		
+		velocidad = velocidad.add(aceleracion);
+		
+		velocidad.limite(velMax);
 			
 		apuntador = apuntador.setDireccion(angulo - Math.PI/2);
+		
+		posicion = posicion.add(velocidad);
+		
+		
 	}
 
 	@Override

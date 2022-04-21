@@ -11,10 +11,12 @@ public abstract class ObjetoMovible extends ObjetoJuego{
 	protected Vector2D velocidad;
 	protected AffineTransform a;
 	protected double angulo;
+	protected double velMax;
 
-	public ObjetoMovible(Vector2D posicion, Vector2D velocidad, BufferedImage textura) {
+	public ObjetoMovible(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura) {
 		super(posicion, textura);
 		this.velocidad = velocidad;
+		this.velMax = velMax;
 		angulo = 0;
 
 	}
