@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class Teclado implements KeyListener{
 	
 	private boolean[] teclas = new boolean[256];	//Comprobar el estado de las teclas.
-	public static boolean ARRIBA, IZQUIERDA, DERECHA;
+	public static boolean ARRIBA, IZQUIERDA, DERECHA, DISPARO;
 	
 	public Teclado() {
 		ARRIBA = false;
@@ -18,6 +18,7 @@ public class Teclado implements KeyListener{
 		ARRIBA = teclas[KeyEvent.VK_UP];
 		IZQUIERDA = teclas[KeyEvent.VK_LEFT];
 		DERECHA = teclas[KeyEvent.VK_RIGHT];
+		DISPARO = teclas[KeyEvent.VK_SPACE];
 	}
 
 	@Override//Cuando se oprime una tecla se guarda en e

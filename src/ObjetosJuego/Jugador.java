@@ -6,27 +6,41 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import entrada.Teclado;
-import main.Window;
+import estados.EstadoJuego;
 import matematicas.Vector2D;
 import graficos.Assets;
+import main.Window;
 
 public class Jugador extends ObjetoMovible{
 
 		private Vector2D apuntador;
+		private Vector2D apuntador2;
 		private Vector2D aceleracion;
 		private final double acc = 0.08;	//Aceleracion constante.
 		private final double ANGULITO = 0.1;
-
 		private boolean acelerando = false;
+		private EstadoJuego estadoJuego;
 
-	public Jugador(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura) {
+		private long tiempo, ultimotiempo;
+
+	public Jugador(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura, EstadoJuego estadoJuego) {
 		super(posicion, velocidad, velMax, textura);
+		this.estadoJuego = estadoJuego;
 		apuntador = new Vector2D(0, 1);
+		apuntador2 = new Vector2D(1, 0);
 		aceleracion = new Vector2D();
+		ultimotiempo = System.currentTimeMillis();
 	}
 
 	@Override
 	public void actualizar() {
+		tiempo += System.currentTimeMillis() - ultimotiempo;
+		ultimotiempo = System.currentTimeMillis();
+		if(Teclado.DISPARO && tiempo > 200) {
+			estadoJuego.getObjetoMovible().add(new Bala(getCenter().add(apuntador.escalar(ancho/2)), apuntador2, 8,angulo ,Assets.player));
+			tiempo = 0;
+		}
+		
 		if(Teclado.DERECHA)
 			angulo += ANGULITO;
 		if(Teclado.IZQUIERDA)
@@ -48,40 +62,46 @@ public class Jugador extends ObjetoMovible{
 		velocidad.limite(velMax);
 			
 		apuntador = apuntador.setDireccion(angulo - Math.PI/2);
+		apuntador2 = apuntador2.setDireccion(angulo - Math.PI*2);
 		
 		posicion = posicion.add(velocidad);
-
-		if (posicion.getX() > Window.WIDTH)
+		
+		if(posicion.getX() > Window.WIDTH)
 			posicion.setX(0);
-		if (posicion.getY() > Window.HEIGHT)
+		if(posicion.getY() > Window.HEIGHT)
 			posicion.setY(0);
-		if (posicion.getY() < 0)
-			posicion.setY(Window.HEIGHT);
-		if (posicion.getX() < 0)
+		
+		if(posicion.getX() < 0)
 			posicion.setX(Window.WIDTH);
+		if(posicion.getY() < 0)
+			posicion.setY(Window.HEIGHT);
+		
 		
 	}
 
 	@Override
 	public void dibujar(Graphics g) {
-		Graphics2D g2d = (Graphics2D)g;
-		AffineTransform at1 = AffineTransform.getTranslateInstance(posicion.getX() + ancho - 60, posicion.getY() + altura - 15);
-		AffineTransform at2 = AffineTransform.getTranslateInstance(posicion.getX() + ancho - 82, posicion.getY() + altura - 15);
-
-		at1.rotate(angulo);
-		at2.rotate(angulo, 22, 0);
-
-		if (acelerando) {
-
+			Graphics2D g2d = (Graphics2D)g;
+			
+			AffineTransform at1 = AffineTransform.getTranslateInstance(posicion.getX() + ancho-60, posicion.getY() + altura-15);
+			AffineTransform at2 = AffineTransform.getTranslateInstance(posicion.getX() + ancho-82, posicion.getY() + altura-15);
+			
+			at1.rotate(angulo);
+			at2.rotate(angulo, 22, 0);
+			
+			if(acelerando) {
 				g2d.drawImage(Assets.turbo, at1, null);
 				g2d.drawImage(Assets.turbo, at2, null);
 			}
-
-		a = AffineTransform.getTranslateInstance(posicion.getX(), posicion.getY());
-
-		a.rotate(angulo, ancho-60, altura-15);
 			
-		g2d.drawImage(Assets.player, a, null);
+			a = AffineTransform.getTranslateInstance(posicion.getX(), posicion.getY());
+			a.rotate(angulo, ancho-60, altura-15);
+			
+			g2d.drawImage(Assets.player, a, null);
+	}
+	
+	public Vector2D getCenter() {
+		return new Vector2D(posicion.getX()+ancho/2, posicion.getY()+altura/2);
 	}
 	
 }
