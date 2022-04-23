@@ -5,13 +5,14 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+import estados.EstadoJuego;
 import graficos.Assets;
 import matematicas.Vector2D;
 
 public class Bala extends ObjetoMovible{
 
-	public Bala(Vector2D posicion, Vector2D velocidad, double velMax, double angulo, BufferedImage textura) {
-		super(posicion, velocidad, velMax, textura);
+	public Bala(Vector2D posicion, Vector2D velocidad, double velMax, double angulo, BufferedImage textura, EstadoJuego estadoJuego) {
+		super(posicion, velocidad, velMax, textura,estadoJuego);
 		this.angulo = angulo;
 		this.velocidad = velocidad.escalar(velMax);
 	}
@@ -19,6 +20,10 @@ public class Bala extends ObjetoMovible{
 	@Override
 	public void actualizar() {
 		posicion = posicion.add(velocidad);
+		//son si sale del ancho de la ventana para borrar las balas
+		if(posicion.getX() < 0 || posicion.getX()  > 1000 || posicion.getY() < 0 || posicion.getY() > 600){
+			estadoJuego.getObjetoMovible().remove(this);
+		}
 	}
 
 	@Override

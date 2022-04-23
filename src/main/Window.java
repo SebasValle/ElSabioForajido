@@ -14,7 +14,7 @@ import graficos.Assets;
 
 public class Window extends JFrame implements Runnable{
 	//Tamanio de la ventana
-	public static final int WIDTH = 800, HEIGHT = 600;
+	public static final int WIDTH = 1000, HEIGHT = 600;
 	//Objetos creados de las librerIas importadas
 	private Canvas canvas;
 	private Thread hilo;
@@ -41,7 +41,7 @@ public class Window extends JFrame implements Runnable{
 		setResizable(false);
 		setLocationRelativeTo(null);
 		
-		setVisible(true);
+
 		
 		canvas = new Canvas();
 		teclado = new Teclado();
@@ -53,6 +53,7 @@ public class Window extends JFrame implements Runnable{
 		
 		add(canvas);
 		canvas.addKeyListener(teclado);
+		setVisible(true);
 		
 	}
 	

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.EmptyStackException;
 
 import entrada.Teclado;
 import estados.EstadoJuego;
@@ -19,26 +20,23 @@ public class Jugador extends ObjetoMovible{
 		private final double acc = 0.08;	//Aceleracion constante.
 		private final double ANGULITO = 0.1;
 		private boolean acelerando = false;
-		private EstadoJuego estadoJuego;
-
-		private long tiempo, ultimotiempo;
+		private Cronometro tiempodisparo;
 
 	public Jugador(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura, EstadoJuego estadoJuego) {
-		super(posicion, velocidad, velMax, textura);
-		this.estadoJuego = estadoJuego;
+		super(posicion, velocidad, velMax, textura,estadoJuego);
 		apuntador = new Vector2D(0, 1);
 		apuntador2 = new Vector2D(1, 0);
 		aceleracion = new Vector2D();
-		ultimotiempo = System.currentTimeMillis();
+		tiempodisparo = new Cronometro();
 	}
 
 	@Override
 	public void actualizar() {
-		tiempo += System.currentTimeMillis() - ultimotiempo;
-		ultimotiempo = System.currentTimeMillis();
-		if(Teclado.DISPARO && tiempo > 200) {
-			estadoJuego.getObjetoMovible().add(new Bala(getCenter().add(apuntador.escalar(ancho/2)), apuntador2, 8,angulo ,Assets.player));
-			tiempo = 0;
+
+		if(Teclado.DISPARO && !tiempodisparo.isCorriendo() ) {
+			estadoJuego.getObjetoMovible().add(new Bala(getCenter().add(apuntador.escalar(ancho/2)), apuntador2, 12,angulo ,Assets.player,estadoJuego));
+			//200 es el tiempo de disparo
+			tiempodisparo.correr(300);
 		}
 		
 		if(Teclado.DERECHA)
@@ -75,7 +73,8 @@ public class Jugador extends ObjetoMovible{
 			posicion.setX(Window.WIDTH);
 		if(posicion.getY() < 0)
 			posicion.setY(Window.HEIGHT);
-		
+
+		tiempodisparo.actualizar();
 		
 	}
 

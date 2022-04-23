@@ -1,6 +1,6 @@
 package estados;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
 
 import ObjetosJuego.Jugador;
@@ -23,6 +23,9 @@ public class EstadoJuego {
 			objetoMovible.get(i).actualizar();
 	}
 	public void dibujar(Graphics gp) {
+		Graphics2D g2d = (Graphics2D)gp;
+		//POR EL ANTIALIASING, RENDERIZAR AL JUGADOR EN LAS VUELTAS
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		for(int i = 0 ; i<objetoMovible.size(); i++)
 			objetoMovible.get(i).dibujar(gp);
 	}

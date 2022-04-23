@@ -34,7 +34,8 @@ public class Vector2D {
 	}
 	
 	public Vector2D normalizacion() {	//Esto serA un vector unitario.
-		return new Vector2D(x/getMagnitud(), y/getMagnitud());
+		double magnitud = getMagnitud();
+		return new Vector2D(x/magnitud, y/magnitud);
 	}
 	
 	public double getMagnitud() {
@@ -42,7 +43,8 @@ public class Vector2D {
 	}
 	
 	public Vector2D setDireccion(double angulo) {
-		return new Vector2D(Math.cos(angulo)*getMagnitud(), Math.sin(angulo)*getMagnitud());
+		double magnitud = getMagnitud();
+		return new Vector2D(Math.cos(angulo)*magnitud, Math.sin(angulo)*magnitud);
 	}
 
 	public double getX() {
