@@ -3,8 +3,11 @@ package ObjetosJuego;
 import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import estados.EstadoJuego;
 import matematicas.Vector2D;
+import ObjetosJuego.Meteoro;
 
 public abstract class ObjetoMovible extends ObjetoJuego{
 	
@@ -14,15 +17,59 @@ public abstract class ObjetoMovible extends ObjetoJuego{
 	protected double velMax;
 	protected int ancho;
 	protected int altura;
+	protected EstadoJuego estadoJuego;
 
-	public ObjetoMovible(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura) {
+	public ObjetoMovible(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura, EstadoJuego estadoJuego) {
 		super(posicion, textura);
 		this.velocidad = velocidad;
 		this.velMax = velMax;
+		this.estadoJuego = estadoJuego;
 		ancho = textura.getWidth();
-		altura = textura.getHeight()
-;		angulo = 0;
+		altura = textura.getHeight();
+		angulo = 0;
 
+	}
+	
+	protected void colisionanding() {
+		ArrayList<ObjetoMovible> objetoMovible = estadoJuego.getObjetoMovible();
+		
+		for(int i=0 ; i < objetoMovible.size() ; i++) {
+			ObjetoMovible m = objetoMovible.get(i);
+			
+			if(m.equals(this))
+				continue;
+			
+			double distancia = m.getCenter().restar(getCenter()).getMagnitud();
+			if(distancia < m.ancho/2 + ancho/2 && objetoMovible.contains(this)) {
+				colisionObjeto(m, this);
+			}
+		}
+	}
+	
+	/*private void colisionObjeto(ObjetoMovible a, ObjetoMovible b) {
+		if(!(a instanceof Meteoro && b instanceof Meteoro) && !(b instanceof Jugador)) {
+			a.Destruir();
+			b.Destruir();
+		}
+	}*/
+	private void colisionObjeto(ObjetoMovible a, ObjetoMovible b) {
+		
+		if(!(a instanceof Meteoro && b instanceof Meteoro) &&
+				  !(a instanceof Bala && b instanceof Jugador) && !(a instanceof Jugador && b instanceof Bala)) {
+			a.Destruir();
+			b.Destruir();
+		}
+		//else if((a instanceof Meteoro)) {
+			//a.Destruir();
+		//}
+	}
+	
+	protected void Destruir() {
+		estadoJuego.getObjetoMovible().remove(this);
+	}
+	
+	public Vector2D getCenter() {
+		return new Vector2D(posicion.getX()+ancho/2, posicion.getY()+altura/2);
 	}
 
 }

@@ -18,10 +18,6 @@ public class Vector2D {
 		return new Vector2D(x+vec.getX(), y+vec.getY());
 	}
 	
-	public Vector2D restar(Vector2D vec) {
-		return new Vector2D(x-vec.getX(), y-vec.getY());
-	}
-	
 	public Vector2D escalar(double valor) {
 		return new Vector2D(x*valor, y*valor);
 	}
@@ -38,9 +34,7 @@ public class Vector2D {
 	}
 	
 	public Vector2D normalizacion() {	//Esto serA un vector unitario.
-		double magnitud = getMagnitud();
-		
-		return new Vector2D(x/magnitud, y/magnitud);
+		return new Vector2D(x/getMagnitud(), y/getMagnitud());
 	}
 	
 	public double getMagnitud() {
@@ -48,9 +42,7 @@ public class Vector2D {
 	}
 	
 	public Vector2D setDireccion(double angulo) {
-		double magnitud = getMagnitud();
-		
-		return new Vector2D(Math.cos(angulo)*magnitud, Math.sin(angulo)*magnitud);
+		return new Vector2D(Math.cos(angulo)*getMagnitud(), Math.sin(angulo)*getMagnitud());
 	}
 
 	public double getX() {

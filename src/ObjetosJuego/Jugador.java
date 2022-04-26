@@ -14,23 +14,26 @@ import main.Window;
 public class Jugador extends ObjetoMovible{
 
 		private Vector2D apuntador;
+		private Vector2D apuntador2;
 		private Vector2D aceleracion;
 		private final double acc = 0.08;	//Aceleracion constante.
 		private final double ANGULITO = 0.1;
 		private boolean acelerando = false;
-		private EstadoJuego estadoJuego;
+		private Cronometro tiempoDisparo;
 
 	public Jugador(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura, EstadoJuego estadoJuego) {
-		super(posicion, velocidad, velMax, textura);
-		this.estadoJuego = estadoJuego;
+		super(posicion, velocidad, velMax, textura, estadoJuego);
 		apuntador = new Vector2D(0, 1);
+		apuntador2 = new Vector2D(1, 0);
 		aceleracion = new Vector2D();
+		tiempoDisparo = new Cronometro();
 	}
 
 	@Override
 	public void actualizar() {
-		if(Teclado.DISPARO) {
-			estadoJuego.getObjetoMovible().add(new Bala(getCenter().add(apuntador.escalar(ancho/2)), apuntador, 10, angulo,Assets.player));
+		if(Teclado.DISPARO && !tiempoDisparo.isCorriendo()) {
+			estadoJuego.getObjetoMovible().add(new Bala(getCenter().add(apuntador.escalar(ancho/2)), apuntador2, 12, angulo,Assets.player, estadoJuego));
+			tiempoDisparo.correr(300);	//200 es el tiempo de disparo.
 		}
 		
 		if(Teclado.DERECHA)
@@ -54,6 +57,7 @@ public class Jugador extends ObjetoMovible{
 		velocidad.limite(velMax);
 			
 		apuntador = apuntador.setDireccion(angulo - Math.PI/2);
+		apuntador2 = apuntador2.setDireccion(angulo - Math.PI*2);
 		
 		posicion = posicion.add(velocidad);
 		
@@ -67,7 +71,8 @@ public class Jugador extends ObjetoMovible{
 		if(posicion.getY() < 0)
 			posicion.setY(Window.HEIGHT);
 		
-		
+		tiempoDisparo.actualizar();		
+		colisionanding();
 	}
 
 	@Override
@@ -89,10 +94,6 @@ public class Jugador extends ObjetoMovible{
 			a.rotate(angulo, ancho-60, altura-15);
 			
 			g2d.drawImage(Assets.player, a, null);
-	}
-	
-	public Vector2D getCenter() {
-		return new Vector2D(posicion.getX()+ancho/2, posicion.getY()+altura/2);
 	}
 	
 }
