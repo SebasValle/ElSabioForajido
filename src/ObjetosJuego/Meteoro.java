@@ -18,6 +18,7 @@ public class Meteoro extends ObjetoMovible{
 			EstadoJuego estadoJuego, Tamanios tamanios) {
 		super(posicion, velocidad, velMax, textura, estadoJuego);
 		this.tamanios = tamanios;
+		this.velocidad = velocidad.escalar(velMax);
 	}
 
 	@Override
@@ -34,7 +35,14 @@ public class Meteoro extends ObjetoMovible{
 		if(posicion.getY() < -altura)
 			posicion.setY(Window.HEIGHT);
 		
-		angulo += 0.1;
+		angulo += 0.03;
+		
+	}
+	
+	@Override
+	public void Destruir() {
+		estadoJuego.dividirMeteoro(this);
+		super.Destruir();
 		
 	}
 

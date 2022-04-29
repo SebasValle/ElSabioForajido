@@ -46,12 +46,6 @@ public abstract class ObjetoMovible extends ObjetoJuego{
 		}
 	}
 	
-	/*private void colisionObjeto(ObjetoMovible a, ObjetoMovible b) {
-		if(!(a instanceof Meteoro && b instanceof Meteoro) && !(b instanceof Jugador)) {
-			a.Destruir();
-			b.Destruir();
-		}
-	}*/
 	private void colisionObjeto(ObjetoMovible a, ObjetoMovible b) {
 		
 		if(!(a instanceof Meteoro && b instanceof Meteoro) &&
@@ -59,9 +53,6 @@ public abstract class ObjetoMovible extends ObjetoJuego{
 			a.Destruir();
 			b.Destruir();
 		}
-		//else if((a instanceof Meteoro)) {
-			//a.Destruir();
-		//}
 	}
 	
 	protected void Destruir() {

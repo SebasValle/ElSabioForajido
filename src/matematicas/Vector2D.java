@@ -26,15 +26,19 @@ public class Vector2D {
 		return new Vector2D(x*valor, y*valor);
 	}
 	
-	public void limite(double valor) {
-		if(x>valor)
+	public Vector2D limite(double valor) {
+		/*if(x>valor)
 			x = valor;
 		if(x<-valor)
 			x = -valor;
 		if(y>valor)
 			y = valor;
 		if(y<-valor)
-			y = -valor;
+			y = -valor;*/
+		if(getMagnitud() > valor) {
+			return this.normalizacion().escalar(valor);
+		}
+		return this;
 	}
 	
 	public Vector2D normalizacion() {	//Esto serA un vector unitario.
@@ -51,6 +55,10 @@ public class Vector2D {
 		double magnitud = getMagnitud();
 		
 		return new Vector2D(Math.cos(angulo)*magnitud, Math.sin(angulo)*magnitud);
+	}
+	
+	public double getAngulo() {
+		return Math.asin(y/getMagnitud());
 	}
 
 	public double getX() {

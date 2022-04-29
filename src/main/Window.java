@@ -76,7 +76,7 @@ public class Window extends JFrame implements Runnable{
 		//Preparamos el lienso
 		gf = bufs.getDrawGraphics();
 		//Dibujo inicio
-		gf.setColor(Color.BLUE);
+		gf.setColor(Color.BLACK);
 		
 		gf.fillRect(0, 0, WIDTH, HEIGHT);
 		
