@@ -7,8 +7,9 @@ public class Assets {
 	
 	//Efectos
 	public static BufferedImage turbo;
-	//Bala
+	//Balas
 	public static BufferedImage bala1;
+	public static BufferedImage moco;
 	//Meteoros
 	
 	public static BufferedImage[] grandes = new BufferedImage[4];
@@ -24,6 +25,7 @@ public class Assets {
 		player = Loader.ImageLoader("/ships/p1.png");
 		turbo = Loader.ImageLoader("/Efectos/turbo.png");
 	    bala1 = Loader.ImageLoader("/lasers/BALA1.png");
+	    moco = Loader.ImageLoader("/lasers/mocoUFO.png");
 	    
 	    for(int i = 0 ; i<grandes.length ; i++)
 	    	grandes[i] = Loader.ImageLoader("/meteoros/G"+(i+1)+".png");

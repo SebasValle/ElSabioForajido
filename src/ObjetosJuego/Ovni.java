@@ -86,12 +86,12 @@ public class Ovni extends ObjetoMovible{
 			
 			aJugador = aJugador.setDireccion(nuevoAngulo);
 			
-			Bala bala = new Bala(
+			BalaEnemigo bala = new BalaEnemigo(
 					getCenter().add(aJugador.escalar(ancho)),
 					aJugador,
 					15.0,
 					nuevoAngulo + Math.PI/2,
-					Assets.bala1,
+					Assets.moco,
 					estadoJuego);
 			
 			estadoJuego.getObjetoMovible().add(0, bala);
