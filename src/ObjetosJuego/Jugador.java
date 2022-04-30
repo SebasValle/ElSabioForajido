@@ -33,7 +33,7 @@ public class Jugador extends ObjetoMovible{
 	public void actualizar() {
 		if(Teclado.DISPARO && !tiempoDisparo.isCorriendo()) {
 			estadoJuego.getObjetoMovible().add(new Bala(getCenter().add(apuntador.escalar(ancho/2)), apuntador2, 12, angulo,Assets.player, estadoJuego));
-			tiempoDisparo.correr(300);	//200 es el tiempo de disparo.
+			tiempoDisparo.correr(200);	//200 es el tiempo de disparo.
 		}
 		
 		if(Teclado.DERECHA)

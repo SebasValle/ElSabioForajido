@@ -17,8 +17,14 @@ public class Assets {
 	public static BufferedImage[] pequeños = new BufferedImage[2];
 	public static BufferedImage[] pequeñitos = new BufferedImage[2];
 	
+	//Numeros
+	public static BufferedImage[] nums = new BufferedImage[11];
+	
 	//Ovni
 	public static BufferedImage UFO;
+	
+	//Vida
+	public static BufferedImage vida;
 	
 	
 	public static void init() {
@@ -40,5 +46,10 @@ public class Assets {
 	    	pequeñitos[i] = Loader.ImageLoader("/meteoros/D"+(i+1)+".png");
 	    
 	    UFO = Loader.ImageLoader("/ships/UFO.png");
+	    
+	    for(int i = 0 ; i<nums.length ; i++)
+	    	nums[i] = Loader.ImageLoader("/HUD/"+(i)+".png");
+	    
+	    vida = Loader.ImageLoader("/HUD/vida.png");
 	}
 }

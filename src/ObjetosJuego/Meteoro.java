@@ -42,6 +42,7 @@ public class Meteoro extends ObjetoMovible{
 	@Override
 	public void Destruir() {
 		estadoJuego.dividirMeteoro(this);
+		estadoJuego.sumarPuntaje(15); 	//Puntaje del meteoro
 		super.Destruir();
 		
 	}

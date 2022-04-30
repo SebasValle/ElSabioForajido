@@ -70,9 +70,9 @@ public class Ovni extends ObjetoMovible{
 		
 		posicion = posicion.add(velocidad);
 		
-		if(posicion.getX() > 1000 || posicion.getY() > 600 ||
+		/*if(posicion.getX() > 1000 || posicion.getY() > 600 ||
 				posicion.getX() < 0 || posicion.getY() < 0)
-			Destruir();
+			Destruir();*/
 		
 		//Disparo
 		if(!velDisparo.isCorriendo()) {
@@ -82,21 +82,24 @@ public class Ovni extends ObjetoMovible{
 			
 			double anguloActual = aJugador.getAngulo();
 			
-			double nuevoAngulo = Math.random()* (Math.PI) - Math.PI/2 + anguloActual;
+			anguloActual += Math.random()* (Math.PI/2 - Math.PI/2)/2;
 			
-			aJugador = aJugador.setDireccion(nuevoAngulo);
+			if(aJugador.getX() < 0)
+				anguloActual = -anguloActual + Math.PI;
+			
+			aJugador = aJugador.setDireccion(anguloActual);
 			
 			BalaEnemigo bala = new BalaEnemigo(
 					getCenter().add(aJugador.escalar(ancho)),
 					aJugador,
-					15.0,
-					nuevoAngulo + Math.PI/2,
+					4.0,	//Velocidad del laser
+					anguloActual + Math.PI/2,
 					Assets.moco,
 					estadoJuego);
 			
 			estadoJuego.getObjetoMovible().add(0, bala);
 			
-			velDisparo.correr(1000); 
+			velDisparo.correr(1000);
 		}
 		
 		angulo += 0.05;
@@ -104,6 +107,12 @@ public class Ovni extends ObjetoMovible{
 		colisionanding();
 		
 		velDisparo.actualizar();
+	}
+	
+	@Override
+	public void Destruir() {
+		estadoJuego.sumarPuntaje(40); //Score
+		super.Destruir();
 	}
 
 	@Override
@@ -117,10 +126,6 @@ public class Ovni extends ObjetoMovible{
 		g2d.drawImage(textura, a, null);
 		
 		g.setColor(Color.RED);
-		
-		for(int i=0 ; i < camino.size() ; i++) {
-			g.drawRect((int)camino.get(i).getX(), (int)camino.get(i).getY(), 5, 5);
-		}
 		
 	}
 

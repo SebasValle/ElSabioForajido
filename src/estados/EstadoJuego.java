@@ -18,7 +18,9 @@ public class EstadoJuego {
 	private Jugador jugador;
 	private ArrayList<ObjetoMovible> objetoMovible = new ArrayList<ObjetoMovible>();
 	
+	private int puntaje = 0;
 	private int meteoros;
+	private int vidas = 3;
 	
 	public EstadoJuego() {
 		jugador = new Jugador(new Vector2D(100, 400), new Vector2D(), 5, Assets.player, this);
@@ -27,6 +29,10 @@ public class EstadoJuego {
 		meteoros = 1;
 		
 		iniciarRonda();
+	}
+	
+	public void sumarPuntaje(int value) {
+		puntaje += value;
 	}
 	
 	public void dividirMeteoro(Meteoro meteoro){
@@ -72,7 +78,7 @@ public class EstadoJuego {
 			objetoMovible.add(new Meteoro(
 					new Vector2D(x, y),
 					new Vector2D(0, 1).setDireccion(Math.random()*Math.PI*2), 
-					5.0*Math.random() +1,	//2.0 es la velocidad del meteoro
+					2.0*Math.random() +1,	//2.0 es la velocidad del meteoro 
 					textura,
 					this,
 					Tamanios.GRANDE));		
@@ -84,8 +90,8 @@ public class EstadoJuego {
 	private void aparecerOvni() {
 		int rand = (int) (Math.random()*2);
 		
-		double x = rand == 0 ? (Math.random()*1000): 0;
-		double y = rand == 0 ? 0: (Math.random()*600);
+		double x = rand == 800 ? (Math.random()*1000): 800;
+		double y = rand == 100 ? 100: (Math.random()*600);
 		
 		ArrayList<Vector2D> camino = new ArrayList<>();
 		
@@ -95,7 +101,7 @@ public class EstadoJuego {
 		posY = Math.random()*600/2;
 		camino.add(new Vector2D(posX, posY));
 		//Sector superior derecho
-		posX = Math.random()*1000/2 + 1000/2;
+		posX = Math.random()*(1000/2) + (1000/2);
 		posY = Math.random()*600/2;
 		camino.add(new Vector2D(posX, posY));
 		//Sector inferior izquierdo
@@ -133,8 +139,43 @@ public class EstadoJuego {
 		
 		for(int i = 0 ; i<objetoMovible.size(); i++)
 			objetoMovible.get(i).dibujar(gp);
+		
+		dibujarScore(gp);
+		dibujarVidas(gp);
 	}
 
+	private void dibujarScore(Graphics g) {
+		Vector2D pos = new Vector2D(850, 25);
+		
+		String puntajeToString = Integer.toString(puntaje);
+		
+		for(int i=0 ; i < puntajeToString.length() ; i++) {
+			g.drawImage(Assets.nums[Integer.parseInt(puntajeToString.substring(i, i+1))],
+					(int)pos.getX(), (int)pos.getY(), null);
+			pos.setX(pos.getX() + 20);
+		}
+	}
+	
+	private void dibujarVidas(Graphics g) {
+		Vector2D posicionVida = new Vector2D(25,25);
+		g.drawImage(Assets.vida, (int)posicionVida.getX(), (int)posicionVida.getY(), null);
+		g.drawImage(Assets.nums[10], (int)posicionVida.getX()+40, (int)posicionVida.getY()+5, null);
+		
+		String vidasToString = Integer.toString(vidas);
+		
+		Vector2D pos = new Vector2D(posicionVida.getX(), posicionVida.getY());
+		
+		for(int i=0 ; i<vidasToString.length(); i++) {
+			int numero = Integer.parseInt(vidasToString.substring(i, i+1));
+			
+			if(numero <= 0)
+				break;
+			g.drawImage(Assets.nums[numero], (int)pos.getX() + 60,
+					(int)pos.getY() + 5, null);
+			pos.setX(pos.getX()+20);
+		}
+	}
+	
 	public ArrayList<ObjetoMovible> getObjetoMovible() {
 		return objetoMovible;
 	}

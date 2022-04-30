@@ -49,7 +49,9 @@ public abstract class ObjetoMovible extends ObjetoJuego{
 	private void colisionObjeto(ObjetoMovible a, ObjetoMovible b) {
 		
 		if(!(a instanceof Meteoro && b instanceof Meteoro) &&
-				  !(a instanceof Bala && b instanceof Jugador) && !(a instanceof Jugador && b instanceof Bala)) {
+				  !(a instanceof Bala && b instanceof Jugador) && !(a instanceof Jugador && b instanceof Bala)&&
+				  !(a instanceof Ovni && b instanceof Meteoro) && !(a instanceof Meteoro && b instanceof Ovni)&&
+				  !(a instanceof BalaEnemigo && b instanceof Meteoro) && !(a instanceof Meteoro && b instanceof BalaEnemigo)) {
 			a.Destruir();
 			b.Destruir();
 		}
