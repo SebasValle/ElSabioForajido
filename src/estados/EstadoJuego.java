@@ -184,6 +184,8 @@ public class EstadoJuego {
 		return jugador;
 	}
 		
-		
+	public void restandoVidas() {
+		vidas--;
+	}
 	
 }

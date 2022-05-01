@@ -48,6 +48,11 @@ public abstract class ObjetoMovible extends ObjetoJuego{
 	
 	private void colisionObjeto(ObjetoMovible a, ObjetoMovible b) {
 		
+		if(a instanceof Jugador && ((Jugador)a).estaApareciendo())
+			return;
+		if(b instanceof Jugador && ((Jugador)b).estaApareciendo())
+			return;
+		
 		if(!(a instanceof Meteoro && b instanceof Meteoro) &&
 				  !(a instanceof Bala && b instanceof Jugador) && !(a instanceof Jugador && b instanceof Bala)&&
 				  !(a instanceof Ovni && b instanceof Meteoro) && !(a instanceof Meteoro && b instanceof Ovni)&&

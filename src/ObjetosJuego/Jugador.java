@@ -20,6 +20,10 @@ public class Jugador extends ObjetoMovible{
 		private final double ANGULITO = 0.1;
 		private boolean acelerando = false;
 		private Cronometro tiempoDisparo;
+		
+		private boolean apareciendo, visible;
+		
+		private Cronometro tiempoAparicion, tiempoParpadeo;
 
 	public Jugador(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura, EstadoJuego estadoJuego) {
 		super(posicion, velocidad, velMax, textura, estadoJuego);
@@ -27,11 +31,28 @@ public class Jugador extends ObjetoMovible{
 		apuntador2 = new Vector2D(1, 0);
 		aceleracion = new Vector2D();
 		tiempoDisparo = new Cronometro();
+		tiempoAparicion = new Cronometro();
+		tiempoParpadeo = new Cronometro();
 	}
 
 	@Override
 	public void actualizar() {
-		if(Teclado.DISPARO && !tiempoDisparo.isCorriendo()) {
+		
+		if(!tiempoAparicion.isCorriendo())
+		{
+			apareciendo = false;
+			visible = true;
+		}
+		
+		if(apareciendo) {
+			if(!tiempoParpadeo.isCorriendo())
+			{
+				tiempoParpadeo.correr(200);	//Parpadeamos por 200 milisegundos
+				visible = !visible;
+			}
+		}
+		
+		if(Teclado.DISPARO && !tiempoDisparo.isCorriendo() && !apareciendo) {
 			estadoJuego.getObjetoMovible().add(new Bala(getCenter().add(apuntador.escalar(ancho/2)), apuntador2, 12, angulo,Assets.player, estadoJuego));
 			tiempoDisparo.correr(200);	//200 es el tiempo de disparo.
 		}
@@ -72,28 +93,52 @@ public class Jugador extends ObjetoMovible{
 			posicion.setY(Window.HEIGHT);
 		
 		tiempoDisparo.actualizar();		
+		tiempoAparicion.actualizar();
+		tiempoParpadeo.actualizar();
 		colisionanding();
+	}
+	
+	@Override
+	public void Destruir() {
+		apareciendo = true;
+		tiempoAparicion.correr(3000);	//Tres segundo para aparecer.
+		restaurarValores();
+		estadoJuego.restandoVidas();
+	}
+	
+	private void restaurarValores() {
+		angulo = 0;
+		velocidad = new Vector2D();
+		posicion = new Vector2D(500 - Assets.player.getWidth()/2, 300 - Assets.player.getHeight()/2);
 	}
 
 	@Override
 	public void dibujar(Graphics g) {
-			Graphics2D g2d = (Graphics2D)g;
-			
-			AffineTransform at1 = AffineTransform.getTranslateInstance(posicion.getX() + ancho-60, posicion.getY() + altura-15);
-			AffineTransform at2 = AffineTransform.getTranslateInstance(posicion.getX() + ancho-82, posicion.getY() + altura-15);
-			
-			at1.rotate(angulo);
-			at2.rotate(angulo, 22, 0);
-			
-			if(acelerando) {
-				g2d.drawImage(Assets.turbo, at1, null);
-				g2d.drawImage(Assets.turbo, at2, null);
-			}
-			
-			a = AffineTransform.getTranslateInstance(posicion.getX(), posicion.getY());
-			a.rotate(angulo, ancho-60, altura-15);
-			
-			g2d.drawImage(Assets.player, a, null);
+		
+		if(!visible)
+			return;
+		
+		Graphics2D g2d = (Graphics2D)g;
+		
+		AffineTransform at1 = AffineTransform.getTranslateInstance(posicion.getX() + ancho-60, posicion.getY() + altura-15);
+		AffineTransform at2 = AffineTransform.getTranslateInstance(posicion.getX() + ancho-82, posicion.getY() + altura-15);
+		
+		at1.rotate(angulo);
+		at2.rotate(angulo, 22, 0);
+		
+		if(acelerando) {
+			g2d.drawImage(Assets.turbo, at1, null);
+			g2d.drawImage(Assets.turbo, at2, null);
+		}
+		
+		a = AffineTransform.getTranslateInstance(posicion.getX(), posicion.getY());
+		a.rotate(angulo, ancho-60, altura-15);
+		
+		g2d.drawImage(Assets.player, a, null);
+	}
+	
+	public boolean estaApareciendo() {
+		return apareciendo;
 	}
 	
 }
