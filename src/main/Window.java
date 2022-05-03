@@ -32,6 +32,7 @@ public class Window extends JFrame implements Runnable{
 	
 	private EstadoJuego estadoJuego;
 	private Teclado teclado;
+
 	
 	//Constructor de nuestra ventana
 	public Window() {

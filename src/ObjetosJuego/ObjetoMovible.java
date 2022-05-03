@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import estados.EstadoJuego;
+import graficos.Sonidos;
 import matematicas.Vector2D;
 import ObjetosJuego.Meteoro;
 
@@ -19,6 +20,8 @@ public abstract class ObjetoMovible extends ObjetoJuego{
 	protected int altura;
 	protected EstadoJuego estadoJuego;
 
+	private Sonidos explosion;
+
 	public ObjetoMovible(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura, EstadoJuego estadoJuego) {
 		super(posicion, textura);
 		this.velocidad = velocidad;
@@ -27,6 +30,7 @@ public abstract class ObjetoMovible extends ObjetoJuego{
 		ancho = textura.getWidth();
 		altura = textura.getHeight();
 		angulo = 0;
+		explosion = new Sonidos();
 
 	}
 	
@@ -64,6 +68,9 @@ public abstract class ObjetoMovible extends ObjetoJuego{
 	
 	protected void Destruir() {
 		estadoJuego.getObjetoMovible().remove(this);
+		if(!(this instanceof  Bala)) {
+			explosion.ReproducirSonido("C:/Users/che_v/OneDrive/Documentos/git/ElSabioForajido/recursos/sonidos/explosion.wav");
+		}
 	}
 	
 	public Vector2D getCenter() {

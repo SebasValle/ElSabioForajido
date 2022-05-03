@@ -11,6 +11,7 @@ import ObjetosJuego.Meteoro;
 import ObjetosJuego.ObjetoMovible;
 import ObjetosJuego.Ovni;
 import graficos.Assets;
+import graficos.Sonidos;
 import matematicas.Vector2D;
 
 public class EstadoJuego {
@@ -21,6 +22,8 @@ public class EstadoJuego {
 	private int puntaje = 0;
 	private int meteoros;
 	private int vidas = 3;
+
+	private Sonidos BGmusic;
 	
 	public EstadoJuego() {
 		jugador = new Jugador(new Vector2D(100, 400), new Vector2D(), 5, Assets.player, this);
@@ -29,6 +32,8 @@ public class EstadoJuego {
 		meteoros = 1;
 		
 		iniciarRonda();
+		BGmusic = new Sonidos();
+		BGmusic.ReproducirSonidoLoop("C:/Users/che_v/OneDrive/Documentos/git/ElSabioForajido/recursos/sonidos/BG.wav");
 	}
 	
 	public void sumarPuntaje(int value) {

@@ -26,7 +26,7 @@ public class Loader {
 			clip.open(AudioSystem.getAudioInputStream(Loader.class.getResource(path)));
 			return clip;
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-			e.printStackTrace();
+			System.out.println("Error al reproducir el sonido.");
 		}
 		return null;
 	}

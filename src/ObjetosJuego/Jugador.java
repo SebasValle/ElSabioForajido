@@ -26,7 +26,7 @@ public class Jugador extends ObjetoMovible{
 		
 		private Cronometro tiempoAparicion, tiempoParpadeo;
 
-		private Sonidos disparo;
+		private Sonidos disparo,muerte;
 
 
 	public Jugador(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura, EstadoJuego estadoJuego) {
@@ -37,7 +37,8 @@ public class Jugador extends ObjetoMovible{
 		tiempoDisparo = new Cronometro();
 		tiempoAparicion = new Cronometro();
 		tiempoParpadeo = new Cronometro();
-		disparo = new Sonidos(Assets.disparo);
+		disparo = new Sonidos();
+		muerte = new Sonidos();
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class Jugador extends ObjetoMovible{
 		if(Teclado.DISPARO && !tiempoDisparo.isCorriendo() && !apareciendo) {
 			estadoJuego.getObjetoMovible().add(new Bala(getCenter().add(apuntador.escalar(ancho/2)), apuntador2, 12, angulo,Assets.player, estadoJuego));
 			tiempoDisparo.correr(200);	//200 es el tiempo de disparo.
-			disparo.play();
+			disparo.ReproducirSonido("C:/Users/che_v/OneDrive/Documentos/git/ElSabioForajido/recursos/sonidos/DISPARO.wav");
 		}
 		
 		if(Teclado.DERECHA)
@@ -108,6 +109,7 @@ public class Jugador extends ObjetoMovible{
 	public void Destruir() {
 		apareciendo = true;
 		tiempoAparicion.correr(3000);	//Tres segundo para aparecer.
+		muerte.ReproducirSonido("C:/Users/che_v/OneDrive/Documentos/git/ElSabioForajido/recursos/sonidos/muerte.wav");
 		restaurarValores();
 		estadoJuego.restandoVidas();
 	}

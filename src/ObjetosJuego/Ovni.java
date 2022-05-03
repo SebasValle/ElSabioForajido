@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import estados.EstadoJuego;
 import graficos.Assets;
+import graficos.Sonidos;
 import matematicas.Vector2D;
 
 public class Ovni extends ObjetoMovible{
@@ -22,6 +23,7 @@ public class Ovni extends ObjetoMovible{
 	private boolean siguiendo;	//Falso cuando se termina de recorrer el camino
 	
 	private Cronometro velDisparo;
+	private Sonidos disparo;
 
 	public Ovni(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura, ArrayList<Vector2D> camino,
 			EstadoJuego estadoJuego) {
@@ -31,6 +33,7 @@ public class Ovni extends ObjetoMovible{
 		siguiendo = true;
 		velDisparo = new Cronometro();
 		velDisparo.correr(1000);	//1 segundo
+		disparo = new Sonidos();
 	}
 	
 	private Vector2D caminoASeguir() {
@@ -100,6 +103,8 @@ public class Ovni extends ObjetoMovible{
 			estadoJuego.getObjetoMovible().add(0, bala);
 			
 			velDisparo.correr(1000);
+
+			disparo.ReproducirSonido("C:/Users/che_v/OneDrive/Documentos/git/ElSabioForajido/recursos/sonidos/DISOVNI.wav");
 		}
 		
 		angulo += 0.05;

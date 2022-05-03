@@ -33,11 +33,11 @@ public class Assets {
 	
 	
 	public static void init() {
-		musicaFondo = Loader.loadSound("/sonidos/bgMusic.wav");
-		explosion = Loader.loadSound("/sonidos/explosion.wav");
-		muerte = Loader.loadSound("/sonidos/muerte.wav");
-		disparo = Loader.loadSound("/sonidos/Disapro.wav");
-		OvniDisparo = Loader.loadSound("/sonidos/MatarAlien.wav");
+		//musicaFondo = Loader.loadSound("/ships/BG.wav");
+		//explosion = Loader.loadSound("/ships/explosion.wav");
+		//muerte = Loader.loadSound("/ships/muerte.wav");
+		//disparo = Loader.loadSound("/sonidos/BG.wav");
+		//OvniDisparo = Loader.loadSound("/ships/MatarAlien.wav");
 
 		player = Loader.ImageLoader("/ships/p1.png");
 		turbo = Loader.ImageLoader("/Efectos/turbo.png");
