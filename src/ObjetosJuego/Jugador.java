@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import entrada.Teclado;
 import estados.EstadoJuego;
+import graficos.Sonidos;
 import matematicas.Vector2D;
 import graficos.Assets;
 import main.Window;
@@ -25,6 +26,9 @@ public class Jugador extends ObjetoMovible{
 		
 		private Cronometro tiempoAparicion, tiempoParpadeo;
 
+		private Sonidos disparo;
+
+
 	public Jugador(Vector2D posicion, Vector2D velocidad, double velMax, BufferedImage textura, EstadoJuego estadoJuego) {
 		super(posicion, velocidad, velMax, textura, estadoJuego);
 		apuntador = new Vector2D(0, 1);
@@ -33,6 +37,7 @@ public class Jugador extends ObjetoMovible{
 		tiempoDisparo = new Cronometro();
 		tiempoAparicion = new Cronometro();
 		tiempoParpadeo = new Cronometro();
+		disparo = new Sonidos(Assets.disparo);
 	}
 
 	@Override
@@ -55,6 +60,7 @@ public class Jugador extends ObjetoMovible{
 		if(Teclado.DISPARO && !tiempoDisparo.isCorriendo() && !apareciendo) {
 			estadoJuego.getObjetoMovible().add(new Bala(getCenter().add(apuntador.escalar(ancho/2)), apuntador2, 12, angulo,Assets.player, estadoJuego));
 			tiempoDisparo.correr(200);	//200 es el tiempo de disparo.
+			disparo.play();
 		}
 		
 		if(Teclado.DERECHA)

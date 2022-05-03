@@ -1,5 +1,7 @@
 package graficos;
+import javax.sound.sampled.Clip;
 import java.awt.image.BufferedImage;
+
 
 public class Assets {
 	
@@ -25,9 +27,18 @@ public class Assets {
 	
 	//Vida
 	public static BufferedImage vida;
+
+	//SOunds
+	public static Clip musicaFondo, explosion,muerte,disparo,OvniDisparo;
 	
 	
 	public static void init() {
+		musicaFondo = Loader.loadSound("/sonidos/bgMusic.wav");
+		explosion = Loader.loadSound("/sonidos/explosion.wav");
+		muerte = Loader.loadSound("/sonidos/muerte.wav");
+		disparo = Loader.loadSound("/sonidos/Disapro.wav");
+		OvniDisparo = Loader.loadSound("/sonidos/MatarAlien.wav");
+
 		player = Loader.ImageLoader("/ships/p1.png");
 		turbo = Loader.ImageLoader("/Efectos/turbo.png");
 	    bala1 = Loader.ImageLoader("/lasers/BALA1.png");
