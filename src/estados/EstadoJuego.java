@@ -14,7 +14,7 @@ import graficos.Assets;
 import graficos.Sonidos;
 import matematicas.Vector2D;
 
-public class EstadoJuego {
+public class EstadoJuego extends Estado {
 	
 	private Jugador jugador;
 	private ArrayList<ObjetoMovible> objetoMovible = new ArrayList<ObjetoMovible>();

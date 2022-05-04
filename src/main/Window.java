@@ -8,7 +8,9 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import entrada.Mouse;
 import entrada.Teclado;
+import estados.Estado;
 import estados.EstadoJuego;
 import graficos.Assets;
 
@@ -30,8 +32,9 @@ public class Window extends JFrame implements Runnable{
 	private double delta = 0;	//Almacena el tiempo que va pasando, temporalmente
 	private int AVERAGE_FPS = FPS;
 	
-	private EstadoJuego estadoJuego;
+	//private EstadoJuego estadoJuego;
 	private Teclado teclado;
+	private Mouse mouse;
 
 	
 	//Constructor de nuestra ventana
@@ -44,6 +47,7 @@ public class Window extends JFrame implements Runnable{
 		
 		canvas = new Canvas();
 		teclado = new Teclado();
+		mouse = new Mouse();
 		
 		canvas.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		canvas.setMaximumSize(new Dimension(WIDTH, HEIGHT));
@@ -52,6 +56,7 @@ public class Window extends JFrame implements Runnable{
 		
 		add(canvas);
 		canvas.addKeyListener(teclado);
+		canvas.addMouseListener(mouse);
 		setVisible(true);
 		
 	}
@@ -64,7 +69,7 @@ public class Window extends JFrame implements Runnable{
 	
 	private void actualizar(){
 		teclado.actualizar();
-		estadoJuego.actualizar();
+		Estado.getEstadoACtual().actualizar();
 	}
 	
 	private void dibujar(){
@@ -80,8 +85,8 @@ public class Window extends JFrame implements Runnable{
 		gf.setColor(Color.BLACK);
 		
 		gf.fillRect(0, 0, WIDTH, HEIGHT);
-		
-		estadoJuego.dibujar(gf);
+
+		Estado.getEstadoACtual().dibujar(gf);
 
 		gf.drawString(""+AVERAGE_FPS, 10, 20);
 		//Dibujo final
@@ -92,7 +97,7 @@ public class Window extends JFrame implements Runnable{
 	
 	private void init() {
 		Assets.init();
-		estadoJuego = new EstadoJuego();
+		Estado.cambiarEstado(new EstadoJuego());
 	}
 
 	//Se inicializa el juego

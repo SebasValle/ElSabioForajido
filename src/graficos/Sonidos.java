@@ -13,7 +13,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.Clip;
 
 public class Sonidos {
-    
+
     public void ReproducirSonido(String nombreSonido){
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
