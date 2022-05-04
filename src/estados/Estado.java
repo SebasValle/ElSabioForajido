@@ -4,7 +4,8 @@ import java.awt.*;
 
 public abstract class Estado {
 
-    private   static Estado estadoActual = null;
+    private static Estado estadoActual = null;
+    
     public static Estado getEstadoACtual()  {return estadoActual;}
 
     public static void cambiarEstado (Estado nuevoestado){

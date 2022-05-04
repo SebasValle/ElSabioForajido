@@ -7,6 +7,8 @@ import org.w3c.dom.Text;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
+import graficos.Assets;
 import graficos.Texto;
 
 import java.awt.*;
@@ -22,7 +24,7 @@ public class Boton {
     private String texto;
     private Accion accion;
 
-    public  Boton(BufferedImage mouseFuera,BufferedImage mouseEncima,int x, int y , String texto,Accion accion) {
+    public Boton(BufferedImage mouseFuera,BufferedImage mouseEncima,int x, int y , String texto,Accion accion) {
 
         this.mouseEncima = mouseEncima;
         this.mouseFuera = mouseFuera;
@@ -32,7 +34,6 @@ public class Boton {
 
     }
     public void actualizar(){
-
         if (Cajaclick.contains(Mouse.x,Mouse.y)){
             mouseDentro = true;
         }else{
@@ -45,10 +46,6 @@ public class Boton {
 
         }
 
-
-
-
-
     }
 
     public void dibujar(Graphics g){
@@ -57,10 +54,15 @@ public class Boton {
             g.drawImage(mouseEncima,Cajaclick.x,Cajaclick.y,null);
 
         }else {
-            g.drawImage(mouseEncima,Cajaclick.x,Cajaclick.y,null);
+            g.drawImage(mouseFuera,Cajaclick.x,Cajaclick.y,null);
         }
 
-        Texto.drawText(g,texto,new Vector2D(Cajaclick.getX()+Cajaclick.getWidth()/2,Cajaclick.getY()+Cajaclick.getHeight()),true,Color.BLACK);
+        Texto.drawText(g,
+        		texto,
+        		new Vector2D(Cajaclick.getX()+Cajaclick.getWidth()/2,Cajaclick.getY()+Cajaclick.getHeight()),
+        		true,
+        		Color.BLACK,
+        		Assets.fontMed);
 
 
 

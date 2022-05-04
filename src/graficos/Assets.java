@@ -1,5 +1,7 @@
 package graficos;
 import javax.sound.sampled.Clip;
+
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 
 
@@ -28,9 +30,19 @@ public class Assets {
 	//Vida
 	public static BufferedImage vida;
 
-	//SOunds
+	//Sunds
 	public static Clip musicaFondo, explosion,muerte,disparo,OvniDisparo;
 	
+	// fonts
+	
+	public static Font fontBig;
+	public static Font fontMed;
+
+	//Botones
+	
+	public static BufferedImage greyBtn;
+	public static BufferedImage blueBtn;
+
 	
 	public static void init() {
 		//musicaFondo = Loader.loadSound("/ships/BG.wav");
@@ -43,6 +55,10 @@ public class Assets {
 		turbo = Loader.ImageLoader("/Efectos/turbo.png");
 	    bala1 = Loader.ImageLoader("/lasers/BALA1.png");
 	    moco = Loader.ImageLoader("/lasers/mocoUFO.png");
+	    
+	    //fontBig = Loader.loadFont("/fonts/futureFont.ttf", 42);
+		
+		//fontMed = Loader.loadFont("/fonts/futureFont.ttf", 20);
 	    
 	    for(int i = 0 ; i<grandes.length ; i++)
 	    	grandes[i] = Loader.ImageLoader("/meteoros/G"+(i+1)+".png");
@@ -62,5 +78,11 @@ public class Assets {
 	    	nums[i] = Loader.ImageLoader("/HUD/"+(i)+".png");
 	    
 	    vida = Loader.ImageLoader("/HUD/vida.png");
+	    
+	    fontBig = Loader.loadFont("/fonts/futureFont.ttf", 42);
+	    fontMed = Loader.loadFont("/fonts/futureFont.ttf", 20);
+	    
+	    greyBtn = Loader.ImageLoader("/ui/boton_azul.png");
+	    blueBtn = Loader.ImageLoader("/ui/boton_gris.png");
 	}
 }

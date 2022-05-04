@@ -12,6 +12,7 @@ import entrada.Mouse;
 import entrada.Teclado;
 import estados.Estado;
 import estados.EstadoJuego;
+import estados.Menu;
 import graficos.Assets;
 
 public class Window extends JFrame implements Runnable{
@@ -57,6 +58,7 @@ public class Window extends JFrame implements Runnable{
 		add(canvas);
 		canvas.addKeyListener(teclado);
 		canvas.addMouseListener(mouse);
+		canvas.addMouseMotionListener(mouse);
 		setVisible(true);
 		
 	}
@@ -97,7 +99,7 @@ public class Window extends JFrame implements Runnable{
 	
 	private void init() {
 		Assets.init();
-		Estado.cambiarEstado(new EstadoJuego());
+		Estado.cambiarEstado(new Menu());
 	}
 
 	//Se inicializa el juego
