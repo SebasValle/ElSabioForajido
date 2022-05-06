@@ -7,7 +7,7 @@ public class Cronometro {
 	
 	public Cronometro() {
 		delta = 0;
-		ultimoTiempo = 0;
+		ultimoTiempo = System.currentTimeMillis();
 		corriendo = false;
 	}
 	

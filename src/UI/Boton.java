@@ -3,7 +3,6 @@ package UI;
 import entrada.Mouse;
 import entrada.Teclado;
 import matematicas.Vector2D;
-import org.w3c.dom.Text;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;

@@ -1,40 +1,45 @@
 package estados;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import ObjetosJuego.Jugador;
-import ObjetosJuego.Meteoro;
-import ObjetosJuego.ObjetoMovible;
-import ObjetosJuego.Ovni;
+import ObjetosJuego.*;
+import UI.Accion;
 import graficos.Assets;
 import graficos.Sonidos;
 import matematicas.Vector2D;
 
 public class EstadoJuego extends Estado {
-	
+
+	public static final Vector2D PLAYER_START_POSITION = new Vector2D(1600 / 2 - Assets.player.getWidth() / 2,
+			600 / 2 - Assets.player.getHeight() / 2);
+
 	private Jugador jugador;
 	private ArrayList<ObjetoMovible> objetoMovible = new ArrayList<ObjetoMovible>();
-	
+	private ArrayList<Message> messages = new ArrayList<Message>();
+
 	private int puntaje = 0;
+	private Cronometro GOtimer;
 	private int meteoros;
 	private int vidas = 3;
 
 	private Sonidos BGmusic;
+	private static int BackGroundMusicOn = 1;
 	
 	public EstadoJuego() {
 		jugador = new Jugador(new Vector2D(100, 400), new Vector2D(), 5, Assets.player, this);
 		objetoMovible.add(jugador);
+		GOtimer = new Cronometro();
 		
 		meteoros = 1;
 		
 		iniciarRonda();
-		BGmusic = new Sonidos();
-		BGmusic.ReproducirSonidoLoop("C:/Users/che_v/OneDrive/Documentos/git/ElSabioForajido/recursos/sonidos/BG.wav");
-	}
+		if(BackGroundMusicOn == 1) {
+			BGmusic = new Sonidos();
+			BGmusic.ReproducirSonidoLoop("C:/Users/che_v/OneDrive/Documentos/git/ElSabioForajido/recursos/sonidos/BG.wav", 1);
+		}
+		}
 	
 	public void sumarPuntaje(int value) {
 		puntaje += value;
@@ -135,6 +140,7 @@ public class EstadoJuego extends Estado {
 		for(int i = 0 ; i<objetoMovible.size(); i++)
 			if(objetoMovible.get(i) instanceof Meteoro)
 				return;
+
 		iniciarRonda();
 	}
 	public void dibujar(Graphics gp) { 		
@@ -162,6 +168,11 @@ public class EstadoJuego extends Estado {
 	}
 	
 	private void dibujarVidas(Graphics g) {
+		if(vidas< 1) {
+			BackGroundMusicOn = 0;
+			Estado.cambiarEstado(new Menu());
+		}
+
 		Vector2D posicionVida = new Vector2D(25,25);
 		g.drawImage(Assets.vida, (int)posicionVida.getX(), (int)posicionVida.getY(), null);
 		g.drawImage(Assets.nums[10], (int)posicionVida.getX()+40, (int)posicionVida.getY()+5, null);
@@ -180,9 +191,19 @@ public class EstadoJuego extends Estado {
 			pos.setX(pos.getX()+20);
 		}
 	}
+
+	public void GAMEOVER(){
+		Message mensajeGO = new Message(PLAYER_START_POSITION,true,"GAME OVER", Color.WHITE,this);
+		this.messages.add(mensajeGO);
+
+	}
 	
 	public ArrayList<ObjetoMovible> getObjetoMovible() {
 		return objetoMovible;
+	}
+
+	public ArrayList<Message> getMessages() {
+		return messages;
 	}
 	
 	public Jugador getJugador() {

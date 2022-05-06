@@ -14,6 +14,8 @@ import javax.sound.sampled.Clip;
 
 public class Sonidos {
 
+    public  int Reiniciar = 0;
+
     public void ReproducirSonido(String nombreSonido){
         try {
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
@@ -25,16 +27,33 @@ public class Sonidos {
         }
     }
 
-    public void ReproducirSonidoLoop(String nombreSonido){
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.setFramePosition(0);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-           // clip.start();
-        } catch(UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
-            System.out.println("Error al reproducir el sonido.");
+    public void ReproducirSonidoLoop(String nombreSonido, int on){
+        if (on == 1) {
+            try {
+
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.setFramePosition(0);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                // clip.start();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                System.out.println("Error al reproducir el sonido.");
+            }
+        }
+        else {
+            try {
+
+                AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(nombreSonido).getAbsoluteFile());
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.setFramePosition(0);
+                clip.stop();
+                // clip.start();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
+                System.out.println("Error al reproducir el sonido.");
+            }
+
         }
     }
 }
